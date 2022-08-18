@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
+import { LoginUserInput } from './dto/login-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 
@@ -44,7 +45,8 @@ export class UsersService {
     return this.usersRepository.delete(id);
   }
 
-  async login(email: string, password: string) {
+  async login(loginUserInput: LoginUserInput) {
+    const { email, password } = loginUserInput;
     // Check if user exists
     const user = this.usersRepository.findOneBy({ email });
 
