@@ -13,7 +13,4 @@ export class CreateReservationInput {
 
   @Field(() => Date)
   endDate: Date;
-
-  @Field(() => Boolean)
-  isAlive: boolean;
 }
