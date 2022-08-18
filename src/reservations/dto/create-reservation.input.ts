@@ -2,6 +2,18 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreateReservationInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field(() => Int)
+  carId: number;
+
+  @Field(() => Int)
+  userId: number;
+
+  @Field(() => Date)
+  startDate: Date;
+
+  @Field(() => Date)
+  endDate: Date;
+
+  @Field(() => Boolean)
+  isAlive: boolean;
 }
