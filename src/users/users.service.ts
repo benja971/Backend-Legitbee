@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -11,19 +12,59 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  createUser(createUserInput: CreateUserInput) {
+  /**
+   * User can be created, updated that includes the basics data (firstName, lastName, email, password) and the isActive flag (default: true) that can be set to false to deactivate the user. A deactivated user can not login.
+   */
+
+  create(createUserInput: CreateUserInput) {
+    const { email } = createUserInput;
+
+    // Check if user already exists
+    // emails are unique, so we can use it to check if user already exists
+
+    const user = this.usersRepository.findOneBy({ email });
+
+    if (user) {
+      throw new HttpException(
+        'User with this email already exists',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    // could crypt the password here
+
     return this.usersRepository.save(createUserInput);
   }
 
-  findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  update(id: number, updateUserInput: UpdateUserInput) {
+    return this.usersRepository.update(id, updateUserInput);
   }
 
-  findOne(id: number): Promise<User> {
-    return this.usersRepository.findOneBy({ id });
+  delete(id: number) {
+    return this.usersRepository.delete(id);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.usersRepository.delete(id);
+  async login(email: string, password: string) {
+    // Check if user exists
+    const user = this.usersRepository.findOneBy({ email });
+
+    if (!user) {
+      throw new HttpException(
+        'User with this email does not exist',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    // Check if password is correct
+    if ((await user).password !== password) {
+      throw new HttpException('Password is incorrect', HttpStatus.BAD_REQUEST);
+    }
+
+    // Check if user is active
+    if (!(await user).isActive) {
+      throw new HttpException('User is not active', HttpStatus.BAD_REQUEST);
+    }
+
+    return user;
   }
 }
