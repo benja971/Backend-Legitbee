@@ -1,15 +1,16 @@
-import { Resolver, Mutation, Args, Int, Query } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { ReservationsService } from './reservations.service';
 import { Reservation } from './entities/reservation.entity';
 import { CreateReservationInput } from './dto/create-reservation.input';
 import { UpdateReservationInput } from './dto/update-reservation.input';
+import { ParseIntPipe } from '@nestjs/common';
 
 @Resolver(() => Reservation)
 export class ReservationsResolver {
   constructor(private readonly reservationsService: ReservationsService) {}
 
   @Query(() => [Reservation], { name: 'reservations' })
-  findAll(@Args('userId') userId: number) {
+  findAll(@Args('userId', ParseIntPipe) userId: number) {
     return this.reservationsService.findAll(userId);
   }
 
@@ -23,7 +24,7 @@ export class ReservationsResolver {
 
   @Mutation(() => Reservation)
   updateReservation(
-    @Args('id')
+    @Args('id', ParseIntPipe)
     id: number,
     @Args('updateReservationInput')
     updateReservationInput: UpdateReservationInput,
@@ -32,7 +33,7 @@ export class ReservationsResolver {
   }
 
   @Mutation(() => Reservation)
-  removeReservation(@Args('id', { type: () => Int }) id: number) {
+  removeReservation(@Args('id', ParseIntPipe) id: number) {
     return this.reservationsService.delete(id);
   }
 }
