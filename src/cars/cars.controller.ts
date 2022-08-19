@@ -21,12 +21,12 @@ export class CarsController {
     return this.carsService.create(createCarInput);
   }
 
-  @Put(':id')
+  @Put(':idCar')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('idCar', ParseIntPipe) idCar: number,
     @Body() updateCarInput: UpdateCarInput,
   ) {
-    return this.carsService.update(updateCarInput.id, updateCarInput);
+    return this.carsService.update(idCar, updateCarInput);
   }
 
   @Get()
@@ -34,8 +34,17 @@ export class CarsController {
     return this.carsService.findAll();
   }
 
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.carsService.remove(id);
+  @Get(':idCar')
+  findOne(@Param('idCar', ParseIntPipe) idCar: number) {
+    return this.carsService.findOne(idCar);
+  }
+
+  findOneReserved(@Param('idResa', ParseIntPipe) idResa: number) {
+    return this.carsService.findOneByReservationId(idResa);
+  }
+
+  @Delete(':idCar')
+  remove(@Param('idCar', ParseIntPipe) idCar: number) {
+    return this.carsService.remove(idCar);
   }
 }
