@@ -1,3 +1,4 @@
+import { carProviders } from './../cars/cars.provider';
 import { CarsController } from './../cars/cars.controller';
 import { Module } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
@@ -11,10 +12,13 @@ import { CarsService } from 'src/cars/cars.service';
 import { UsersResolver } from 'src/users/users.resolver';
 import { UsersService } from 'src/users/users.service';
 import { UsersController } from '../users/users.controller';
+import { reservationProviders } from './reservations.provider';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Reservation, Car, Reservation])],
   providers: [
+    ...reservationProviders,
+    ...carProviders,
     ReservationsResolver,
     ReservationsService,
     CarsResolver,

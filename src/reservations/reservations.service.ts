@@ -1,7 +1,5 @@
-import { HttpException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { Car } from 'src/cars/entities/car.entity';
-import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReservationInput } from './dto/create-reservation.input';
 import { UpdateReservationInput } from './dto/update-reservation.input';
@@ -10,12 +8,9 @@ import { Reservation } from './entities/reservation.entity';
 @Injectable()
 export class ReservationsService {
   constructor(
-    @InjectRepository(Reservation)
+    @Inject('CAR_REPOSITORY') private carRepository: Repository<Car>,
+    @Inject('RESERVATION_REPOSITORY')
     private reservationRepository: Repository<Reservation>,
-    @InjectRepository(Car)
-    private carRepository: Repository<Car>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
   ) {}
 
   /**

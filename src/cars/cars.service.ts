@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Inject } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { CreateCarInput } from './dto/create-car.input';
 import { UpdateCarInput } from './dto/update-car.input';
@@ -9,8 +8,9 @@ import { Reservation } from '../reservations/entities/reservation.entity';
 @Injectable()
 export class CarsService {
   constructor(
-    @InjectRepository(Car)
+    @Inject('CAR_REPOSITORY')
     private carsRepository: Repository<Car>,
+    @Inject('RESERVATION_REPOSITORY')
     private reservationsRepository: Repository<Reservation>,
   ) {}
 
