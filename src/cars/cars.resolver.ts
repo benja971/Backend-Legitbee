@@ -23,13 +23,13 @@ export class CarsResolver {
     return this.carsService.findOne(id);
   }
 
-  @Mutation(() => Car)
-  updateCar(@Args('updateCarInput') updateCarInput: UpdateCarInput) {
-    return this.carsService.update(updateCarInput.id, updateCarInput);
+  @Query(() => Car, { name: 'carReserved' })
+  findOneReserved(@Args('idResa', { type: () => Int }) idResa: number) {
+    return this.carsService.findOneByReservationId(idResa);
   }
 
   @Mutation(() => Car)
-  removeCar(@Args('id', { type: () => Int }) id: number) {
-    return this.carsService.remove(id);
+  updateCar(@Args('updateCarInput') updateCarInput: UpdateCarInput) {
+    return this.carsService.update(updateCarInput.id, updateCarInput);
   }
 }

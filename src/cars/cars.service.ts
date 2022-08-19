@@ -4,31 +4,51 @@ import { Repository } from 'typeorm';
 import { CreateCarInput } from './dto/create-car.input';
 import { UpdateCarInput } from './dto/update-car.input';
 import { Car } from './entities/car.entity';
+import { Reservation } from '../reservations/entities/reservation.entity';
 
 @Injectable()
 export class CarsService {
   constructor(
     @InjectRepository(Car)
-    private usersRepository: Repository<Car>,
+    private carsRepository: Repository<Car>,
+    private reservationsRepository: Repository<Reservation>,
   ) {}
 
+  /**
+   * Car can be created, edited, and deleted
+   * User can get all the cars which are not reserved
+   * Cars can be get by their id or by the id of a reservation
+   */
+
   create(createCarInput: CreateCarInput) {
-    return this.usersRepository.save(createCarInput);
+    return this.carsRepository.save(createCarInput);
   }
 
   findAll() {
-    return this.usersRepository.find();
+    return this.carsRepository.findBy({ isReserved: false });
   }
 
   findOne(id: number) {
-    return this.usersRepository.findOneBy({ id });
+    return this.carsRepository.findOneBy({ id });
+  }
+
+  async findOneByReservationId(reservationId: number) {
+    const reservation = this.reservationsRepository.findOneBy({
+      id: reservationId,
+    });
+
+    const car = this.carsRepository.findOneBy({
+      id: (await reservation).carId,
+    });
+
+    return car;
   }
 
   update(id: number, updateCarInput: UpdateCarInput) {
-    return this.usersRepository.update(id, updateCarInput);
+    return this.carsRepository.update(id, updateCarInput);
   }
 
   remove(id: number) {
-    return this.usersRepository.delete(id);
+    return this.carsRepository.delete(id);
   }
 }
