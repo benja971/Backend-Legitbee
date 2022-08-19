@@ -13,10 +13,19 @@ import { Car } from './cars/entities/car.entity';
 import { Reservation } from './reservations/entities/reservation.entity';
 import { CarsService } from './cars/cars.service';
 import { UsersService } from './users/users.service';
+import { GraphQLModule } from '@nestjs/graphql';
 import { ReservationsService } from './reservations/reservations.service';
+import { ConfigModule } from '@nestjs/config';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'ec2-52-30-75-37.eu-west-1.compute.amazonaws.com',
