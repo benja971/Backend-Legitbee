@@ -11,6 +11,9 @@ import { ReservationsModule } from './reservations/reservations.module';
 import { ReservationsController } from './reservations/reservations.controller';
 import { Car } from './cars/entities/car.entity';
 import { Reservation } from './reservations/entities/reservation.entity';
+import { CarsService } from './cars/cars.service';
+import { UsersService } from './users/users.service';
+import { ReservationsService } from './reservations/reservations.service';
 
 @Module({
   imports: [
@@ -35,6 +38,6 @@ import { Reservation } from './reservations/entities/reservation.entity';
     CarsController,
     ReservationsController,
   ],
-  providers: [AppService],
+  providers: [AppService, CarsService, UsersService, ReservationsService],
 })
 export class AppModule {}
