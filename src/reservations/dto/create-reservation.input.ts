@@ -3,14 +3,14 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 @InputType()
 export class CreateReservationInput {
   @Field(() => Int)
-  carId: number;
+  id_car: number;
 
   @Field(() => Int)
-  userId: number;
+  user_id: number;
 
   @Field(() => Date)
-  startDate: Date;
+  start_date: Date;
 
   @Field(() => Date)
-  endDate: Date;
+  end_date: Date;
 }

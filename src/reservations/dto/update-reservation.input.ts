@@ -9,17 +9,17 @@ export class UpdateReservationInput extends PartialType(
   id: number;
 
   @Field(() => Int)
-  carId?: number;
+  id_car?: number;
 
   @Field(() => Int)
-  userId?: number;
+  id_user?: number;
 
   @Field(() => Date)
-  startDate?: Date;
+  start_date?: Date;
 
   @Field(() => Date)
-  endDate?: Date;
+  end_date?: Date;
 
   @Field(() => Boolean)
-  isAlive?: boolean;
+  isActive?: boolean;
 }

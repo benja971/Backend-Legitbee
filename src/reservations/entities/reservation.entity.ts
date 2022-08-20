@@ -1,21 +1,23 @@
+import { ObjectType } from '@nestjs/graphql';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
+@ObjectType()
 export class Reservation {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  carId: number;
+  car_id: number;
 
   @Column()
-  userId: number;
+  user_id: number;
 
   @Column()
-  startDate: Date;
+  start_date: Date;
 
   @Column()
-  endDate: Date;
+  end_date: Date;
 
   @Column({ default: true })
   isActive: boolean;

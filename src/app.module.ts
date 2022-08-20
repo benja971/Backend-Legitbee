@@ -1,9 +1,8 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { CacheModule, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import * as redisStore from 'cache-manager-redis-store';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,18 +11,19 @@ import { Car } from './cars/entities/car.entity';
 import { DatabaseModule } from './database/database.module';
 import { Reservation } from './reservations/entities/reservation.entity';
 import { ReservationsModule } from './reservations/reservations.module';
+import { TestModule } from './test/test.module';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    CacheModule.register({
-      isGlobal: true,
-      store: redisStore,
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT,
-    }),
+    // CacheModule.register({
+    //   isGlobal: true,
+    //   store: redisStore,
+    //   host: process.env.REDIS_HOST,
+    //   port: process.env.REDIS_PORT,
+    // }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -42,6 +42,7 @@ import { UsersModule } from './users/users.module';
     CarsModule,
     ReservationsModule,
     DatabaseModule,
+    TestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

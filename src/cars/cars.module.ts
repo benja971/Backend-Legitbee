@@ -1,3 +1,4 @@
+import { CarsResolver } from './cars.resolver';
 import { Module } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CarsController } from './cars.controller';
@@ -8,7 +9,7 @@ import { DatabaseModule } from 'src/database/database.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Car]), DatabaseModule],
-  providers: [...carProviders, CarsService],
+  providers: [...carProviders, CarsService, CarsResolver],
   controllers: [CarsController],
   exports: [CarsService],
 })

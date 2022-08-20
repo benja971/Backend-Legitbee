@@ -1,22 +1,12 @@
+import { ObjectType } from '@nestjs/graphql';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
+@ObjectType()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
-
-  @Column()
-  email: string;
-
-  @Column()
-  password: string;
-
-  @Column({ default: true })
-  isActive: boolean;
+  name: string;
 }
