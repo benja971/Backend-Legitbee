@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
-import { CreateReservationInput } from './dto/create-reservation.input';
-import { UpdateReservationInput } from './dto/update-reservation.input';
+import { Controller, Delete, Get, Param } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
 
 @Controller('reservations')
@@ -18,19 +8,6 @@ export class ReservationsController {
   @Get(':userId')
   findAll(@Param('userId') userId: number) {
     return this.reservationsService.findAll(userId);
-  }
-
-  @Post()
-  create(@Body() createReservationInput: CreateReservationInput) {
-    return this.reservationsService.create(createReservationInput);
-  }
-
-  @Put(':resaId')
-  update(
-    @Param('resaId') resaId: number,
-    @Body() updateReservationInput: UpdateReservationInput,
-  ) {
-    return this.reservationsService.update(resaId, updateReservationInput);
   }
 
   @Delete(':resaId')

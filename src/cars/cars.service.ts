@@ -22,7 +22,7 @@ export class CarsService {
   }
 
   findAll() {
-    return this.carsRepository.findBy({ isReserved: false });
+    return this.carsRepository.find();
   }
 
   findOne(id: number) {

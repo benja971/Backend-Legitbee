@@ -7,7 +7,4 @@ export class Car {
 
   @Column()
   model: string;
-
-  @Column({ default: false })
-  isReserved: boolean;
 }

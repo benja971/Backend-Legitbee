@@ -1,3 +1,6 @@
+import { Car } from 'src/cars/entities/car.entity';
+import { Reservation } from 'src/reservations/entities/reservation.entity';
+import { User } from 'src/users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
 export const databaseProviders = [
@@ -6,13 +9,12 @@ export const databaseProviders = [
     useFactory: async () => {
       const dataSource = new DataSource({
         type: 'postgres',
-        host: 'ec2-52-30-75-37.eu-west-1.compute.amazonaws.com',
-        database: 'dc9n4oaah79rir',
-        username: 'bvmacnaytiesct',
+        host: process.env.POSTGRES_HOST,
+        database: process.env.POSTGRES_DB,
+        username: process.env.POSTGRES_USER,
         port: 5432,
-        password:
-          '2a0ad6303a39580c7e44b796a2a933a4c495d310b7264f10a6df4cfae6ab35d9',
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+        password: process.env.POSTGRES_PASSWORD,
+        entities: [User, Car, Reservation],
         synchronize: true,
       });
       return await dataSource.initialize();

@@ -18,5 +18,5 @@ export class Reservation {
   endDate: Date;
 
   @Column({ default: true })
-  isAlive: boolean;
+  isActive: boolean;
 }

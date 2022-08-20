@@ -1,40 +1,40 @@
-import { Module } from '@nestjs/common';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { CacheModule, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as redisStore from 'cache-manager-redis-store';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersController } from './users/users.controller';
-import { UsersModule } from './users/users.module';
-import { User } from './users/entities/user.entity';
 import { CarsModule } from './cars/cars.module';
-import { CarsController } from './cars/cars.controller';
-import { ReservationsModule } from './reservations/reservations.module';
-import { ReservationsController } from './reservations/reservations.controller';
 import { Car } from './cars/entities/car.entity';
-import { Reservation } from './reservations/entities/reservation.entity';
-import { CarsService } from './cars/cars.service';
-import { UsersService } from './users/users.service';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ReservationsService } from './reservations/reservations.service';
-import { ConfigModule } from '@nestjs/config';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
 import { DatabaseModule } from './database/database.module';
+import { Reservation } from './reservations/entities/reservation.entity';
+import { ReservationsModule } from './reservations/reservations.module';
+import { User } from './users/entities/user.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore,
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'ec2-52-30-75-37.eu-west-1.compute.amazonaws.com',
-      database: 'dc9n4oaah79rir',
-      username: 'bvmacnaytiesct',
+      host: process.env.POSTGRES_HOST,
+      database: process.env.POSTGRES_DB,
+      username: process.env.POSTGRES_USER,
       port: 5432,
-      password:
-        '2a0ad6303a39580c7e44b796a2a933a4c495d310b7264f10a6df4cfae6ab35d9',
+      password: process.env.POSTGRES_PASSWORD,
       entities: [User, Car, Reservation],
       synchronize: true,
     }),

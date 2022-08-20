@@ -8,7 +8,4 @@ export class UpdateCarInput extends PartialType(CreateCarInput) {
 
   @Field(() => String, { nullable: true })
   model?: string;
-
-  @Field(() => Boolean, { nullable: true })
-  isReserved?: boolean;
 }
