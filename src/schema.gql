@@ -54,6 +54,7 @@ type Mutation {
   createUser(user: CreateUserInput!): User!
   createCar(createCarInput: CreateCarInput!): Car!
   updateCar(updateCarInput: UpdateCarInput!): Car!
+  removeCar(id: Int!): Car!
   createReservation(reservation: CreateReservationInput!): Reservation!
 }
 

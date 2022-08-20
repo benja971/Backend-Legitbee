@@ -27,4 +27,9 @@ export class CarsResolver {
   updateCar(@Args('updateCarInput') updateCarInput: UpdateCarInput) {
     return this.carsService.update(updateCarInput.id, updateCarInput);
   }
+
+  @Mutation(() => Car, { name: 'removeCar' })
+  removeCar(@Args('id', { type: () => Int }) id: number) {
+    return this.carsService.remove(id);
+  }
 }
