@@ -29,4 +29,8 @@ export class UsersService {
   update(id: number, user: CreateUserInput) {
     return this.usersRepository.update(id, user);
   }
+
+  findAll() {
+    return this.usersRepository.find();
+  }
 }

@@ -45,6 +45,7 @@ scalar DateTime
 
 type Query {
   findOneUser(id: Float!): User!
+  findAllUsers: [User!]!
   findAllCars: [Car!]!
   findOneCar(id: Int!): Car!
   findOneReservation(id: Float!): Reservation!
@@ -52,6 +53,8 @@ type Query {
 
 type Mutation {
   createUser(user: CreateUserInput!): User!
+  updateUser(id: Float!, user: CreateUserInput!): User!
+  removeUser(id: Float!): User!
   createCar(createCarInput: CreateCarInput!): Car!
   updateCar(updateCarInput: UpdateCarInput!): Car!
   removeCar(id: Int!): Car!

@@ -16,4 +16,19 @@ export class UsersResolver {
   createUser(@Args('user') user: CreateUserInput) {
     return this.usersService.create(user);
   }
+
+  @Mutation(() => User, { name: 'updateUser' })
+  updateUser(@Args('id') id: number, @Args('user') user: CreateUserInput) {
+    return this.usersService.update(id, user);
+  }
+
+  @Mutation(() => User, { name: 'removeUser' })
+  removeUser(@Args('id') id: number) {
+    return this.usersService.remove(id);
+  }
+
+  @Query(() => [User], { name: 'findAllUsers' })
+  findAll() {
+    return this.usersService.findAll();
+  }
 }
