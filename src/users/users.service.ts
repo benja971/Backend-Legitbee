@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.type';
 import { CreateUserInput } from './dto/create-user.input';
+import { User } from './entities/user.type';
 
 @Injectable()
 export class UsersService {
@@ -11,7 +11,7 @@ export class UsersService {
   ) {}
 
   /**
-   * User can be created, updated that includes the basics data (firstName, lastName, email, password) and the isActive flag (default: true) that can be set to false to deactivate the user. A deactivated user can not login.
+   * User can be created, updated that includes the basics data (firstName, lastName, email, password) and the isActive flag (default: true) that can * be set to false to deactivate the user. A deactivated user can not login.
    */
 
   create(user: CreateUserInput) {
@@ -20,5 +20,13 @@ export class UsersService {
 
   findOne(id: number) {
     return this.usersRepository.findOneBy({ id });
+  }
+
+  remove(id: number) {
+    return this.usersRepository.delete(id);
+  }
+
+  update(id: number, user: CreateUserInput) {
+    return this.usersRepository.update(id, user);
   }
 }

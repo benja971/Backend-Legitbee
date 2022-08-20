@@ -15,7 +15,7 @@ export const databaseProviders = [
         port: 5432,
         password: process.env.POSTGRES_PASSWORD,
         entities: [User, Car, Reservation],
-        synchronize: true,
+        // synchronize: true,
       });
       return await dataSource.initialize();
     },

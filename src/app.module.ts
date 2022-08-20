@@ -11,7 +11,6 @@ import { Car } from './cars/entities/car.entity';
 import { DatabaseModule } from './database/database.module';
 import { Reservation } from './reservations/entities/reservation.entity';
 import { ReservationsModule } from './reservations/reservations.module';
-import { TestModule } from './test/test.module';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
@@ -36,13 +35,12 @@ import { UsersModule } from './users/users.module';
       port: 5432,
       password: process.env.POSTGRES_PASSWORD,
       entities: [User, Car, Reservation],
-      synchronize: true,
+      // synchronize: true,
     }),
     UsersModule,
     CarsModule,
     ReservationsModule,
     DatabaseModule,
-    TestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

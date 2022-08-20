@@ -43,17 +43,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Test {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type Query {
   findOneUser(id: Float!): User!
   findAllCars: [Car!]!
   findOneCar(id: Int!): Car!
   findOneReservation(id: Float!): Reservation!
-  test(id: Int!): Test!
 }
 
 type Mutation {
@@ -61,9 +55,6 @@ type Mutation {
   createCar(createCarInput: CreateCarInput!): Car!
   updateCar(updateCarInput: UpdateCarInput!): Car!
   createReservation(reservation: CreateReservationInput!): Reservation!
-  createTest(createTestInput: CreateTestInput!): Test!
-  updateTest(updateTestInput: UpdateTestInput!): Test!
-  removeTest(id: Int!): Test!
 }
 
 input CreateUserInput {
@@ -92,15 +83,4 @@ input CreateReservationInput {
   user_id: Int!
   start_date: DateTime!
   end_date: DateTime!
-}
-
-input CreateTestInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateTestInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
