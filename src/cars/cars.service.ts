@@ -3,15 +3,12 @@ import { Repository } from 'typeorm';
 import { CreateCarInput } from './dto/create-car.input';
 import { UpdateCarInput } from './dto/update-car.input';
 import { Car } from './entities/car.entity';
-import { Reservation } from '../reservations/entities/reservation.entity';
 
 @Injectable()
 export class CarsService {
   constructor(
-    @Inject('CAR_REPOSITORY')
+    @Inject('CARS_REPOSITORY')
     private carsRepository: Repository<Car>,
-    @Inject('RESERVATION_REPOSITORY')
-    private reservationsRepository: Repository<Reservation>,
   ) {}
 
   /**
@@ -30,18 +27,6 @@ export class CarsService {
 
   findOne(id: number) {
     return this.carsRepository.findOneBy({ id });
-  }
-
-  async findOneByReservationId(reservationId: number) {
-    const reservation = this.reservationsRepository.findOneBy({
-      id: reservationId,
-    });
-
-    const car = this.carsRepository.findOneBy({
-      id: (await reservation).carId,
-    });
-
-    return car;
   }
 
   update(id: number, updateCarInput: UpdateCarInput) {

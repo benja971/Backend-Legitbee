@@ -1,31 +1,30 @@
-import { carProviders } from './../cars/cars.provider';
-import { CarsController } from './../cars/cars.controller';
 import { Module } from '@nestjs/common';
-import { ReservationsService } from './reservations.service';
-import { ReservationsResolver } from './reservations.resolver';
-import { ReservationsController } from './reservations.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Reservation } from './entities/reservation.entity';
+import { CarsModule } from 'src/cars/cars.module';
+import { carProviders } from 'src/cars/cars.provider';
 import { Car } from 'src/cars/entities/car.entity';
-import { CarsResolver } from 'src/cars/cars.resolver';
-import { CarsService } from 'src/cars/cars.service';
-import { UsersResolver } from 'src/users/users.resolver';
-import { UsersService } from 'src/users/users.service';
-import { UsersController } from '../users/users.controller';
+import { DatabaseModule } from 'src/database/database.module';
+import { UsersModule } from '../users/users.module';
+import { User } from './../users/entities/user.entity';
+import { Reservation } from './entities/reservation.entity';
+import { ReservationsController } from './reservations.controller';
 import { reservationProviders } from './reservations.provider';
+import { ReservationsService } from './reservations.service';
+import { userProviders } from '../users/users.provider';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Reservation, Car, Reservation])],
+  imports: [
+    TypeOrmModule.forFeature([User, Car, Reservation]),
+    DatabaseModule,
+    UsersModule,
+    CarsModule,
+  ], //imort usermodule
   providers: [
     ...reservationProviders,
     ...carProviders,
-    ReservationsResolver,
+    ...userProviders,
     ReservationsService,
-    CarsResolver,
-    CarsService,
-    UsersResolver,
-    UsersService,
   ],
-  controllers: [ReservationsController, CarsController, UsersController],
+  controllers: [ReservationsController],
 })
 export class ReservationsModule {}

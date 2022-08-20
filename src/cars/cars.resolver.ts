@@ -23,11 +23,6 @@ export class CarsResolver {
     return this.carsService.findOne(id);
   }
 
-  @Query(() => Car, { name: 'carReserved' })
-  findOneReserved(@Args('idResa', { type: () => Int }) idResa: number) {
-    return this.carsService.findOneByReservationId(idResa);
-  }
-
   @Mutation(() => Car)
   updateCar(@Args('updateCarInput') updateCarInput: UpdateCarInput) {
     return this.carsService.update(updateCarInput.id, updateCarInput);

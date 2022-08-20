@@ -3,7 +3,7 @@ import { Reservation } from './entities/reservation.entity';
 
 export const reservationProviders = [
   {
-    provide: 'RESERVATION_REPOSITORY',
+    provide: 'RESERVATIONS_REPOSITORY',
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(Reservation),
     inject: ['DATA_SOURCE'],

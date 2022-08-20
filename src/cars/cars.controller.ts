@@ -39,10 +39,6 @@ export class CarsController {
     return this.carsService.findOne(idCar);
   }
 
-  findOneReserved(@Param('idResa', ParseIntPipe) idResa: number) {
-    return this.carsService.findOneByReservationId(idResa);
-  }
-
   @Delete(':idCar')
   remove(@Param('idCar', ParseIntPipe) idCar: number) {
     return this.carsService.remove(idCar);

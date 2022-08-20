@@ -18,6 +18,7 @@ import { ReservationsService } from './reservations/reservations.service';
 import { ConfigModule } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -40,13 +41,9 @@ import { join } from 'path';
     UsersModule,
     CarsModule,
     ReservationsModule,
+    DatabaseModule,
   ],
-  controllers: [
-    AppController,
-    UsersController,
-    CarsController,
-    ReservationsController,
-  ],
-  providers: [AppService, CarsService, UsersService, ReservationsService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
