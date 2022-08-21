@@ -61,7 +61,7 @@ type Query {
 
 type Mutation {
   createUser(user: CreateUserInput!): User!
-  updateUser(id: Float!, user: CreateUserInput!): User!
+  updateUser(id: Float!, user: UpdateUserInput!): User!
   removeUser(id: Float!): User!
   createReservation(reservation: CreateReservationInput!): Reservation!
   updateReservation(id: Float!, reservation: UpdateReservationInput!): Reservation!
@@ -77,6 +77,15 @@ input CreateUserInput {
 
   """Is the user's account is active ?"""
   isActive: Boolean = true
+}
+
+input UpdateUserInput {
+  """name of the User"""
+  name: String!
+
+  """Is the user's account is active ?"""
+  isActive: Boolean!
+  id: Int!
 }
 
 input CreateReservationInput {

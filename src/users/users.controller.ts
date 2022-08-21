@@ -9,6 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -26,7 +27,7 @@ export class UsersController {
   }
 
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() user: CreateUserInput) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() user: UpdateUserInput) {
     return this.usersService.update(id, user);
   }
 
