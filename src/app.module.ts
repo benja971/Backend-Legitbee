@@ -7,11 +7,11 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CarsModule } from './cars/cars.module';
-import { Car } from './cars/entities/car.entity';
+import { Cars } from './cars/entities/cars.entity';
 import { DatabaseModule } from './database/database.module';
-import { Reservation } from './reservations/entities/reservation.entity';
+import { Reservations } from './reservations/entities/reservation.entity';
 import { ReservationsModule } from './reservations/reservations.module';
-import { User } from './users/entities/user.entity';
+import { Users } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -34,8 +34,8 @@ import { UsersModule } from './users/users.module';
       username: process.env.POSTGRES_USER,
       port: 5432,
       password: process.env.POSTGRES_PASSWORD,
-      entities: [User, Car, Reservation],
-      // synchronize: true,
+      entities: [Users, Cars, Reservations],
+      synchronize: true,
     }),
     UsersModule,
     CarsModule,

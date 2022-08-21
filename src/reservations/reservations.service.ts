@@ -1,15 +1,18 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
-import { Car } from 'src/cars/entities/car.type';
+import { Cars } from 'src/cars/entities/cars.entity';
+import { Users } from 'src/users/entities/user.entity';
 import { Between, Repository } from 'typeorm';
 import { CreateReservationInput } from './dto/create-reservation.input';
-import { Reservation } from './entities/reservation.type';
+import { Reservations } from './entities/reservation.entity';
+import { UpdateReservationInput } from './dto/update-reservation.input';
 
 @Injectable()
 export class ReservationsService {
   constructor(
-    @Inject('CARS_REPOSITORY') private carRepository: Repository<Car>,
+    @Inject('CARS_REPOSITORY') private carRepository: Repository<Cars>,
+    @Inject('USERS_REPOSITORY') private userRepository: Repository<Users>,
     @Inject('RESERVATIONS_REPOSITORY')
-    private reservationRepository: Repository<Reservation>,
+    private reservationRepository: Repository<Reservations>,
   ) {}
 
   /**
@@ -21,11 +24,36 @@ export class ReservationsService {
    */
 
   async get(id: number) {
-    return await this.reservationRepository.findOneBy({ id });
+    return await this.reservationRepository.findOneBy({
+      isActive: true,
+      id,
+    });
+  }
+
+  async getAll() {
+    return await this.reservationRepository.findBy({
+      isActive: true,
+    });
   }
 
   async createReservation(reservation: CreateReservationInput) {
-    const { id_car, start_date, end_date } = reservation;
+    let { id_car, id_user, start_date, end_date } = reservation;
+
+    id_car = typeof id_car === 'string' ? parseInt(id_car) : id_car;
+    id_user = typeof id_user === 'string' ? parseInt(id_user) : id_user;
+    start_date = new Date(start_date);
+    end_date = new Date(end_date);
+
+    const user = await this.userRepository.findOneBy({ id: id_user });
+    const car = await this.carRepository.findOneBy({ id: id_car });
+
+    if (!car) {
+      throw new HttpException('Car not found', 404);
+    }
+
+    if (!user) {
+      throw new HttpException('User not found', 404);
+    }
 
     // check if date range is valid
     if (start_date > end_date) {
@@ -40,38 +68,55 @@ export class ReservationsService {
      * 
      * SELECT COUNT(*)
       FROM Reservations 
-      WHERE isActive = TRUE AND idCar = {idCar} AND (({debut} >= start_date AND {debut} <= end_date})
-      OR ({fin} >= start_date AND {fin} <= end_date}))
+      WHERE isActive = TRUE AND idCar = {idCar} AND (({debut} >= startDate AND {debut} <= endDate})
+      OR ({fin} >= startDate AND {fin} <= endDate}))
      */
-    const isNotAvailable = new Boolean(
-      await this.reservationRepository.count({
-        where: [
-          {
-            isActive: true,
-            car_id: id_car,
-            start_date: Between(start_date, end_date),
-          },
-          {
-            isActive: true,
-            car_id: id_car,
-            end_date: Between(start_date, end_date),
-          },
-        ],
-      }),
-    );
 
-    if (isNotAvailable) {
-      throw new HttpException('Car is not available', 409);
+    const count = await this.reservationRepository.count({
+      where: [
+        {
+          isActive: true,
+          id_car,
+          start_date: Between(start_date, end_date),
+        },
+        {
+          isActive: true,
+          id_car,
+          end_date: Between(start_date, end_date),
+        },
+      ],
+    });
+
+    console.log(count);
+
+    // : Between(start_date, end_date)
+
+    if (count > 0) {
+      throw new HttpException('Cant succeed', 409);
     }
 
-    return this.reservationRepository.save(reservation);
+    const resa = {
+      id_car,
+      id_user,
+      start_date,
+      end_date,
+    };
+
+    return this.reservationRepository.save(resa);
   }
 
-  async update(id: number, reservation: CreateReservationInput) {
+  async updateReservation(id: number, reservation: UpdateReservationInput) {
     return await this.reservationRepository.update(id, reservation);
   }
 
-  async delete(id: number) {
+  async deleteReservation(id: number) {
     return await this.reservationRepository.delete(id);
+  }
+
+  async getAllForUser(id: number) {
+    return await this.reservationRepository.findBy({
+      id_user: id,
+      isActive: true,
+    });
   }
 }

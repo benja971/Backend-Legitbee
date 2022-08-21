@@ -6,10 +6,10 @@ export class Reservation {
   id: number;
 
   @Field(() => Int, { description: 'Id of the reserved car' })
-  car_id: number;
+  id_car: number;
 
   @Field(() => Int, { description: 'Id of the reserver' })
-  user_id: number;
+  id_user: number;
 
   @Field(() => Date, { description: 'Start date of the reservation' })
   start_date: Date;

@@ -1,11 +1,11 @@
 import { DataSource } from 'typeorm';
-import { Reservation } from './entities/reservation.entity';
+import { Reservations } from './entities/reservation.entity';
 
 export const reservationProviders = [
   {
     provide: 'RESERVATIONS_REPOSITORY',
     useFactory: (dataSource: DataSource) =>
-      dataSource.getRepository(Reservation),
+      dataSource.getRepository(Reservations),
     inject: ['DATA_SOURCE'],
   },
 ];

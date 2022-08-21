@@ -1,6 +1,6 @@
-import { Car } from 'src/cars/entities/car.entity';
-import { Reservation } from 'src/reservations/entities/reservation.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Cars } from 'src/cars/entities/cars.entity';
+import { Reservations } from 'src/reservations/entities/reservation.entity';
+import { Users } from 'src/users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
 export const databaseProviders = [
@@ -14,8 +14,8 @@ export const databaseProviders = [
         username: process.env.POSTGRES_USER,
         port: 5432,
         password: process.env.POSTGRES_PASSWORD,
-        entities: [User, Car, Reservation],
-        // synchronize: true,
+        entities: [Users, Cars, Reservations],
+        synchronize: true,
       });
       return await dataSource.initialize();
     },

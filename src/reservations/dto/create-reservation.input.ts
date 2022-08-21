@@ -6,7 +6,7 @@ export class CreateReservationInput {
   id_car: number;
 
   @Field(() => Int)
-  user_id: number;
+  id_user: number;
 
   @Field(() => Date)
   start_date: Date;

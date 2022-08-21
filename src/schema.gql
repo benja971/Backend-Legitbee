@@ -23,10 +23,10 @@ type Reservation {
   id: Int!
 
   """Id of the reserved car"""
-  car_id: Int!
+  id_car: Int!
 
   """Id of the reserver"""
-  user_id: Int!
+  id_user: Int!
 
   """Start date of the reservation"""
   start_date: DateTime!
@@ -48,7 +48,9 @@ type Query {
   findAllUsers: [User!]!
   findAllCars: [Car!]!
   findOneCar(id: Int!): Car!
+  getAllReservations: [Reservation!]!
   findOneReservation(id: Float!): Reservation!
+  getReservationsByUser(id: Float!): [Reservation!]!
 }
 
 type Mutation {
@@ -59,6 +61,8 @@ type Mutation {
   updateCar(updateCarInput: UpdateCarInput!): Car!
   removeCar(id: Int!): Car!
   createReservation(reservation: CreateReservationInput!): Reservation!
+  updateReservation(id: Float!, reservation: UpdateReservationInput!): Reservation!
+  deleteReservation(id: Float!): Reservation!
 }
 
 input CreateUserInput {
@@ -84,7 +88,16 @@ input UpdateCarInput {
 
 input CreateReservationInput {
   id_car: Int!
-  user_id: Int!
+  id_user: Int!
   start_date: DateTime!
   end_date: DateTime!
+}
+
+input UpdateReservationInput {
+  id_car: Int!
+  id_user: Int!
+  start_date: DateTime!
+  end_date: DateTime!
+  id: Int!
+  isActive: Boolean!
 }

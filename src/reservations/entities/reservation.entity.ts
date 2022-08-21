@@ -1,17 +1,33 @@
 import { ObjectType } from '@nestjs/graphql';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Cars } from 'src/cars/entities/cars.entity';
+import { Users } from 'src/users/entities/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
-export class Reservation {
+export class Reservations {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  car_id: number;
+  id_car: number;
 
   @Column()
-  user_id: number;
+  id_user: number;
+
+  // @OneToOne(() => Cars)
+  // @JoinColumn()
+  // car: Cars;
+
+  // @OneToOne(() => Users)
+  // @JoinColumn()
+  // user: Users;
 
   @Column()
   start_date: Date;
