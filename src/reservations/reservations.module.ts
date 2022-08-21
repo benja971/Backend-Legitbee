@@ -1,5 +1,4 @@
-import { ReservationsService } from './reservations.service';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CarsModule } from 'src/cars/cars.module';
 import { carProviders } from 'src/cars/cars.provider';
@@ -12,13 +11,14 @@ import { Reservations } from './entities/reservation.entity';
 import { ReservationsController } from './reservations.controller';
 import { reservationProviders } from './reservations.provider';
 import { ReservationsResolver } from './reservations.resolver';
+import { ReservationsService } from './reservations.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Users, Cars, Reservations]),
     DatabaseModule,
-    UsersModule,
-    CarsModule,
+    forwardRef(() => UsersModule),
+    forwardRef(() => CarsModule),
   ], //imort usermodule
   providers: [
     ...reservationProviders,
@@ -28,6 +28,6 @@ import { ReservationsResolver } from './reservations.resolver';
     ReservationsResolver,
   ],
   controllers: [ReservationsController],
-  // exports: [ReservationsService],
+  exports: [ReservationsService],
 })
 export class ReservationsModule {}

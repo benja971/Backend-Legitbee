@@ -1,7 +1,8 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { Cars } from 'src/cars/entities/cars.entity';
 import { Users } from 'src/users/entities/user.entity';
 import { Between, Not, Repository } from 'typeorm';
+import { CarsService } from './../cars/cars.service';
 import { CreateReservationInput } from './dto/create-reservation.input';
 import { UpdateReservationInput } from './dto/update-reservation.input';
 import { Reservations } from './entities/reservation.entity';
@@ -9,7 +10,8 @@ import { Reservations } from './entities/reservation.entity';
 @Injectable()
 export class ReservationsService {
   constructor(
-    @Inject('CARS_REPOSITORY') private carRepository: Repository<Cars>,
+    @Inject(forwardRef(() => CarsService))
+    private carRepository: Repository<Cars>,
     @Inject('USERS_REPOSITORY') private userRepository: Repository<Users>,
     @Inject('RESERVATIONS_REPOSITORY')
     private reservationRepository: Repository<Reservations>,
@@ -338,5 +340,27 @@ export class ReservationsService {
       id_user: id,
       isActive: true,
     });
+  }
+
+  async deleteReservationsByCarId(id: number) {
+    return await this.reservationRepository.delete({ id_car: id });
+  }
+
+  async disableReservationsByCarId(id: number) {
+    return await this.reservationRepository.update(
+      { id_car: id },
+      { isActive: false },
+    );
+  }
+
+  async removeByUserId(id: number) {
+    return await this.reservationRepository.delete({ id_user: id });
+  }
+
+  async disableByUserId(id: number) {
+    return await this.reservationRepository.update(
+      { id_user: id },
+      { isActive: false },
+    );
   }
 }

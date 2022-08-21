@@ -2,17 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Car {
-  """Unique id"""
-  id: Int!
-
-  """Car model"""
-  model: String!
-
-  """Can the car be reserved ?"""
-  isActive: Boolean!
-}
-
 type User {
   """Unique id"""
   id: Int!
@@ -49,26 +38,37 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Car {
+  """Unique id"""
+  id: Int!
+
+  """Car model"""
+  model: String!
+
+  """Can the car be reserved ?"""
+  isActive: Boolean!
+}
+
 type Query {
   findOneUser(id: Float!): User!
   findAllUsers: [User!]!
-  findAllCars: [Car!]!
-  findOneCar(id: Int!): Car!
   getAllReservations: [Reservation!]!
   findOneReservation(id: Float!): Reservation!
   getReservationsByUser(id: Float!): [Reservation!]!
+  findAllCars: [Car!]!
+  findOneCar(id: Int!): Car!
 }
 
 type Mutation {
   createUser(user: CreateUserInput!): User!
   updateUser(id: Float!, user: CreateUserInput!): User!
   removeUser(id: Float!): User!
-  createCar(createCarInput: CreateCarInput!): Car!
-  updateCar(updateCarInput: UpdateCarInput!): Car!
-  removeCar(id: Int!): Car!
   createReservation(reservation: CreateReservationInput!): Reservation!
   updateReservation(id: Float!, reservation: UpdateReservationInput!): Reservation!
   deleteReservation(id: Float!): Reservation!
+  createCar(createCarInput: CreateCarInput!): Car!
+  updateCar(updateCarInput: UpdateCarInput!): Car!
+  removeCar(id: Int!): Car!
 }
 
 input CreateUserInput {
@@ -77,23 +77,6 @@ input CreateUserInput {
 
   """Is the user's account is active ?"""
   isActive: Boolean = true
-}
-
-input CreateCarInput {
-  """Model of the car"""
-  model: String!
-
-  """Can the car be reserved ?"""
-  isActive: Boolean = true
-}
-
-input UpdateCarInput {
-  """Car model"""
-  model: String!
-
-  """Can the car be reserved ?"""
-  isActive: Boolean!
-  id: Int!
 }
 
 input CreateReservationInput {
@@ -109,6 +92,23 @@ input UpdateReservationInput {
   id_user: Int
   start_date: DateTime!
   end_date: DateTime!
+  isActive: Boolean!
+  id: Int!
+}
+
+input CreateCarInput {
+  """Model of the car"""
+  model: String!
+
+  """Can the car be reserved ?"""
+  isActive: Boolean = true
+}
+
+input UpdateCarInput {
+  """Car model"""
+  model: String!
+
+  """Can the car be reserved ?"""
   isActive: Boolean!
   id: Int!
 }

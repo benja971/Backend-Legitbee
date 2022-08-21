@@ -1,4 +1,5 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
+import { ReservationsService } from 'src/reservations/reservations.service';
 import { Repository } from 'typeorm';
 import { CreateCarInput } from './dto/create-car.input';
 import { UpdateCarInput } from './dto/update-car.input';
@@ -9,6 +10,8 @@ export class CarsService {
   constructor(
     @Inject('CARS_REPOSITORY')
     private carsRepository: Repository<Car>,
+    @Inject(forwardRef(() => ReservationsService))
+    private reservationsService: ReservationsService,
   ) {}
 
   /**
@@ -30,10 +33,31 @@ export class CarsService {
   }
 
   async update(id: number, updateCarInput: UpdateCarInput) {
+    const { model, isActive } = updateCarInput;
+
+    let ok = false;
+
+    const car = await this.carsRepository.findOneBy({ id });
+    if (!car) throw new HttpException('Car not found', 404);
+
+    if (ok === false && model) ok = true;
+
+    const active = isActive.toString() === 'false' ? false : true;
+    if (ok === false && active === false) {
+      updateCarInput.isActive = active;
+
+      // disable all the reservations related to the car
+      await this.reservationsService.disableReservationsByCarId(id);
+
+      ok = true;
+    }
+
     return await this.carsRepository.update(id, updateCarInput);
   }
 
   async remove(id: number) {
+    // delete all the reservations related to the car
+    await this.reservationsService.deleteReservationsByCarId(id);
     return await this.carsRepository.delete(id);
   }
 }
