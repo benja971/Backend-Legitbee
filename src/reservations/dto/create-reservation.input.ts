@@ -13,4 +13,7 @@ export class CreateReservationInput {
 
   @Field(() => Date)
   end_date: Date;
+
+  @Field(() => Boolean, { defaultValue: true })
+  isActive: boolean;
 }

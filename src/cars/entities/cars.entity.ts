@@ -9,4 +9,7 @@ export class Cars {
 
   @Column()
   model: string;
+
+  @Column({ default: true })
+  isActive: boolean;
 }

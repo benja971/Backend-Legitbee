@@ -7,4 +7,10 @@ export class Car {
 
   @Field(() => String, { description: 'Car model' })
   model: string;
+
+  @Field(() => Boolean, {
+    description: 'Can the car be reserved ?',
+    defaultValue: true,
+  })
+  isActive: boolean;
 }

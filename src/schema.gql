@@ -8,6 +8,9 @@ type Car {
 
   """Car model"""
   model: String!
+
+  """Can the car be reserved ?"""
+  isActive: Boolean!
 }
 
 type User {
@@ -16,6 +19,9 @@ type User {
 
   """User name"""
   name: String!
+
+  """Is the user's account is active ?"""
+  isActive: Boolean!
 }
 
 type Reservation {
@@ -68,21 +74,25 @@ type Mutation {
 input CreateUserInput {
   """Name of the User"""
   name: String!
+
+  """Is the user's account is active ?"""
+  isActive: Boolean = true
 }
 
 input CreateCarInput {
   """Model of the car"""
   model: String!
 
-  """Is the car reserved"""
-  isReserved: Boolean = false
+  """Can the car be reserved ?"""
+  isActive: Boolean = true
 }
 
 input UpdateCarInput {
-  model: String
+  """Car model"""
+  model: String!
 
-  """Is the car reserved"""
-  isReserved: Boolean = false
+  """Can the car be reserved ?"""
+  isActive: Boolean!
   id: Int!
 }
 
@@ -91,6 +101,7 @@ input CreateReservationInput {
   id_user: Int!
   start_date: DateTime!
   end_date: DateTime!
+  isActive: Boolean = true
 }
 
 input UpdateReservationInput {
@@ -98,6 +109,6 @@ input UpdateReservationInput {
   id_user: Int!
   start_date: DateTime!
   end_date: DateTime!
-  id: Int!
   isActive: Boolean!
+  id: Int!
 }

@@ -8,4 +8,7 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
 
   @Field(() => String, { description: 'name of the User' })
   name?: string;
+
+  @Field(() => Boolean, { description: "Is the user's account is active ?" })
+  isActive?: boolean;
 }

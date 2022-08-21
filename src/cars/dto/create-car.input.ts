@@ -6,8 +6,8 @@ export class CreateCarInput {
   model: string;
 
   @Field(() => Boolean, {
-    description: 'Is the car reserved',
-    defaultValue: false,
+    description: 'Can the car be reserved ?',
+    defaultValue: true,
   })
-  isReserved: boolean;
+  isActive: boolean;
 }

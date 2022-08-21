@@ -55,8 +55,11 @@ export class ReservationsService {
       throw new HttpException('User not found', 404);
     }
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     // check if date range is valid
-    if (start_date > end_date) {
+    if (today > start_date || today > end_date || start_date > end_date) {
       throw new HttpException("Date range isn't correct", 400);
     }
 

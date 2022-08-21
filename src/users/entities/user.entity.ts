@@ -9,4 +9,7 @@ export class Users {
 
   @Column()
   name: string;
+
+  @Column({ default: true })
+  isActive: boolean;
 }

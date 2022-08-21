@@ -7,4 +7,10 @@ export class User {
 
   @Field(() => String, { description: 'User name' })
   name: string;
+
+  @Field(() => Boolean, {
+    description: "Is the user's account is active ?",
+    defaultValue: true,
+  })
+  isActive: boolean;
 }

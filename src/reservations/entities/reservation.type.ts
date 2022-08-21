@@ -17,6 +17,9 @@ export class Reservation {
   @Field(() => Date, { description: 'End date of the reservation' })
   end_date: Date;
 
-  @Field(() => Boolean, { description: 'Is the reservation active' })
+  @Field(() => Boolean, {
+    description: 'Is the reservation active',
+    defaultValue: true,
+  })
   isActive: boolean;
 }
