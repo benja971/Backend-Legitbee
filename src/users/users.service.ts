@@ -14,23 +14,23 @@ export class UsersService {
    * User can be created, updated that includes the basics data (firstName, lastName, email, password) and the isActive flag (default: true) that can * be set to false to deactivate the user. A deactivated user can not login.
    */
 
-  create(user: CreateUserInput) {
-    return this.usersRepository.save(user);
+  async create(user: CreateUserInput) {
+    return await this.usersRepository.save(user);
   }
 
-  findOne(id: number) {
-    return this.usersRepository.findOneBy({ id });
+  async findOne(id: number) {
+    return await this.usersRepository.findOneBy({ id });
   }
 
-  remove(id: number) {
-    return this.usersRepository.delete(id);
+  async remove(id: number) {
+    return await this.usersRepository.delete(id);
   }
 
-  update(id: number, user: CreateUserInput) {
-    return this.usersRepository.update(id, user);
+  async update(id: number, user: CreateUserInput) {
+    return await this.usersRepository.update(id, user);
   }
 
-  findAll() {
-    return this.usersRepository.find();
+  async findAll() {
+    return await this.usersRepository.find();
   }
 }

@@ -17,23 +17,23 @@ export class CarsService {
    * Cars can be get by their id or by the id of a reservation
    */
 
-  create(createCarInput: CreateCarInput) {
-    return this.carsRepository.save(createCarInput);
+  async create(createCarInput: CreateCarInput) {
+    return await this.carsRepository.save(createCarInput);
   }
 
   findAll() {
     return this.carsRepository.find();
   }
 
-  findOne(id: number) {
-    return this.carsRepository.findOneBy({ id });
+  async findOne(id: number) {
+    return await this.carsRepository.findOneBy({ id });
   }
 
-  update(id: number, updateCarInput: UpdateCarInput) {
-    return this.carsRepository.update(id, updateCarInput);
+  async update(id: number, updateCarInput: UpdateCarInput) {
+    return await this.carsRepository.update(id, updateCarInput);
   }
 
-  remove(id: number) {
-    return this.carsRepository.delete(id);
+  async remove(id: number) {
+    return await this.carsRepository.delete(id);
   }
 }

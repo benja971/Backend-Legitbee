@@ -3,8 +3,8 @@ import { Cars } from 'src/cars/entities/cars.entity';
 import { Users } from 'src/users/entities/user.entity';
 import { Between, Repository } from 'typeorm';
 import { CreateReservationInput } from './dto/create-reservation.input';
-import { Reservations } from './entities/reservation.entity';
 import { UpdateReservationInput } from './dto/update-reservation.input';
+import { Reservations } from './entities/reservation.entity';
 
 @Injectable()
 export class ReservationsService {
