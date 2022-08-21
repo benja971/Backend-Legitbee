@@ -21,8 +21,8 @@ export class CarsService {
     return await this.carsRepository.save(createCarInput);
   }
 
-  findAll() {
-    return this.carsRepository.find();
+  async findAll() {
+    return await this.carsRepository.find();
   }
 
   async findOne(id: number) {

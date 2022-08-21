@@ -106,7 +106,7 @@ input CreateReservationInput {
 
 input UpdateReservationInput {
   id_car: Int!
-  id_user: Int!
+  id_user: Int
   start_date: DateTime!
   end_date: DateTime!
   isActive: Boolean!

@@ -11,9 +11,6 @@ export class UpdateReservationInput extends PartialType(
   @Field(() => Int)
   id_car?: number;
 
-  @Field(() => Int)
-  id_user?: number;
-
   @Field(() => Date)
   start_date?: Date;
 
