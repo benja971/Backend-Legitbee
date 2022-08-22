@@ -1,5 +1,5 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +13,7 @@ import { Reservations } from './reservations/entities/reservation.entity';
 import { ReservationsModule } from './reservations/reservations.module';
 import { Users } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [

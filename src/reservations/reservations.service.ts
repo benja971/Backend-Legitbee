@@ -11,7 +11,7 @@ import { Reservations } from './entities/reservation.entity';
 export class ReservationsService {
   constructor(
     @Inject(forwardRef(() => CarsService))
-    private carRepository: Repository<Cars>,
+    private carService: CarsService,
     @Inject('USERS_REPOSITORY') private userRepository: Repository<Users>,
     @Inject('RESERVATIONS_REPOSITORY')
     private reservationRepository: Repository<Reservations>,
@@ -42,7 +42,9 @@ export class ReservationsService {
     const { id_car, id_user, start_date, end_date } = reservation;
 
     const user = await this.userRepository.findOneBy({ id: id_user });
-    const car = await this.carRepository.findOneBy({ id: id_car });
+    console.log(user);
+
+    const car = await this.carService.findOne(id_car);
 
     if (!car) {
       throw new HttpException('Car not found', 404);
@@ -102,7 +104,7 @@ export class ReservationsService {
     let ok = false;
 
     const resa = await this.reservationRepository.findOneBy({ id });
-    const newCar = await this.carRepository.findOneBy({ id: id_car });
+    const newCar = await this.carService.findOne(id_car);
 
     if (!resa) throw new HttpException('Reservation not found', 404);
 
