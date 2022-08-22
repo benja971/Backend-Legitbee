@@ -101,15 +101,13 @@ export class ReservationsService {
   async updateReservation(id: number, reservation: UpdateReservationInput) {
     const { id_car, start_date, end_date, isActive } = reservation;
 
-    let ok = false;
-
     const resa = await this.reservationRepository.findOneBy({ id });
     const newCar = await this.carService.findOne(id_car);
 
     if (!resa) throw new HttpException('Reservation not found', 404);
 
     // car, start_date, end_date
-    if (ok === false && id_car && start_date && end_date) {
+    if (id_car && start_date && end_date) {
       if (!newCar) throw new HttpException('Car not found', 404);
 
       // check if date range is valid
@@ -136,12 +134,10 @@ export class ReservationsService {
 
       if (count > 0)
         throw new HttpException("Can't reserved that car at this moment", 409);
-
-      ok = true;
     }
 
     // car, start_date
-    if (ok === false && id_car && start_date) {
+    else if (id_car && start_date) {
       if (!newCar) throw new HttpException('Car not found', 404);
 
       // check if car is available
@@ -164,16 +160,14 @@ export class ReservationsService {
 
       if (count > 0)
         throw new HttpException("Can't reserved that car at this moment", 409);
-
-      ok = true;
     }
 
     // car, end_date
-    if (ok === false && id_car && end_date) {
+    else if (id_car && end_date) {
       if (!newCar) throw new HttpException('Car not found', 404);
 
       // check if date range is valid
-      if (new Date(resa.start_date) > end_date)
+      if (new Date(resa.start_date) > new Date(end_date))
         throw new HttpException("Date range isn't correct", 400);
 
       // check if car is available
@@ -196,14 +190,12 @@ export class ReservationsService {
 
       if (count > 0)
         throw new HttpException("Can't reserved that car at this moment", 409);
-
-      ok = true;
     }
 
     // start_date, end_date
-    if (ok === false && start_date && end_date) {
+    else if (start_date && end_date) {
       // check if date range is valid
-      if (start_date > end_date)
+      if (new Date(start_date) > new Date(end_date))
         throw new HttpException("Date range isn't correct", 400);
 
       // check if car is available
@@ -226,12 +218,10 @@ export class ReservationsService {
 
       if (count > 0)
         throw new HttpException("Can't reserved that car at this moment", 409);
-
-      ok = true;
     }
 
     // car
-    if (ok === false && id_car) {
+    else if (id_car) {
       if (!newCar) throw new HttpException('Car not found', 404);
 
       // check if car is available
@@ -254,12 +244,10 @@ export class ReservationsService {
 
       if (count > 0)
         throw new HttpException("Can't reserved that car at this moment", 409);
-
-      ok = true;
     }
 
     // start_date
-    if (ok === false && start_date) {
+    else if (start_date) {
       // check date range
       if (new Date(start_date) > new Date(resa.end_date))
         throw new HttpException("Date range isn't correct", 400);
@@ -284,12 +272,10 @@ export class ReservationsService {
 
       if (count > 0)
         throw new HttpException("Can't reserved that car at this moment", 409);
-
-      ok = true;
     }
 
     // end_date
-    if (ok === false && end_date) {
+    else if (end_date) {
       // check if date range is valid
 
       if (new Date(resa.start_date) > new Date(end_date))
@@ -315,18 +301,16 @@ export class ReservationsService {
 
       if (count > 0)
         throw new HttpException("Can't reserved that car at this moment", 409);
-
-      ok = true;
     }
 
-    const active = isActive.toString() === 'false' ? false : true;
-    if (ok === false && active === false) {
+    // isActive
+    else if (isActive) {
+      const active = isActive.toString() === 'false' ? false : true;
       reservation.isActive = active;
-      ok = true;
     }
 
     // rien
-    if (ok === false) {
+    else {
       throw new HttpException('Nothing to update', 400);
     }
 

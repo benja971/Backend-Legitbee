@@ -18,12 +18,12 @@ import * as redisStore from 'cache-manager-redis-store';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    // CacheModule.register({
-    //   isGlobal: true,
-    //   store: redisStore,
-    //   host: process.env.REDIS_HOST,
-    //   port: process.env.REDIS_PORT,
-    // }),
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore,
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
