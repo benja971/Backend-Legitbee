@@ -52,7 +52,7 @@ export class CarsService {
       isActive !== undefined ? active : carToUpdate.isActive,
     );
 
-    if (active) await this.reservationsService.disableReservationsByCarId(id);
+    if (!active) await this.reservationsService.disableReservationsByCarId(id);
 
     return await this.carsRepository.update(id, newCar);
   }

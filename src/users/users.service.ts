@@ -35,22 +35,24 @@ export class UsersService {
   async update(id: number, user: UpdateUserInput) {
     const { name, isActive } = user;
 
-    let ok = false;
-
-    const car = await this.usersRepository.findOneBy({ id });
-    if (!car) throw new HttpException('Car not found', 404);
-
-    if (ok === false && name) ok = true;
-
-    const active = isActive.toString() === 'false' ? false : true;
-    if (ok === false && active === false) {
-      user.isActive = active;
-
-      // disable all the reservations related to the car
-      await this.reservationService.disableReservationsByCarId(id);
-
-      ok = true;
+    let userToUpdate;
+    try {
+      userToUpdate = await this.usersRepository.findOneBy({ id });
+    } catch (error) {
+      throw new HttpException('Cannot find this user', 400);
     }
+
+    if (!userToUpdate) throw new HttpException('User not found', 404);
+
+    const active = isActive?.toString() === 'false' ? false : true;
+
+    const newUser = new UpdateUserInput(
+      id,
+      name !== undefined ? name : userToUpdate.name,
+      isActive !== undefined ? active : userToUpdate.isActive,
+    );
+
+    if (!active) await this.reservationService.disableByUserId(id);
 
     return await this.usersRepository.update(id, user);
   }
