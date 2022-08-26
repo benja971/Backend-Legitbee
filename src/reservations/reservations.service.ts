@@ -166,13 +166,15 @@ export class ReservationsService {
     if (!car) throw new HttpException('Car not found', 404);
     if (!user) throw new HttpException('User not found', 404);
 
+    const active = isActive?.toString() === 'false' ? false : true;
+
     const resa = new UpdateReservationInput(
       id,
       id_car !== undefined ? id_car : reservationToUpdate.id_car,
       id_user !== undefined ? id_user : reservationToUpdate.id_user,
       start_date !== undefined ? start_date : reservationToUpdate.start_date,
       end_date !== undefined ? end_date : reservationToUpdate.end_date,
-      isActive !== undefined ? isActive : reservationToUpdate.isActive,
+      isActive !== undefined ? active : reservationToUpdate.isActive,
     );
 
     if (await this.isValidReservation(resa))
