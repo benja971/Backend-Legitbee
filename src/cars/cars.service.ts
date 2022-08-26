@@ -35,24 +35,26 @@ export class CarsService {
   async update(id: number, updateCarInput: UpdateCarInput) {
     const { model, isActive } = updateCarInput;
 
-    let ok = false;
-
-    const car = await this.carsRepository.findOneBy({ id });
-    if (!car) throw new HttpException('Car not found', 404);
-
-    if (ok === false && model) ok = true;
-
-    const active = isActive.toString() === 'false' ? false : true;
-    if (ok === false && active === false) {
-      updateCarInput.isActive = active;
-
-      // disable all the reservations related to the car
-      await this.reservationsService.disableReservationsByCarId(id);
-
-      ok = true;
+    let carToUpdate;
+    try {
+      carToUpdate = await this.carsRepository.findOneBy({ id });
+    } catch (error) {
+      throw new HttpException('Cannot find this car', 400);
     }
 
-    return await this.carsRepository.update(id, updateCarInput);
+    if (!carToUpdate) throw new HttpException('Car not found', 404);
+
+    const active = isActive?.toString() === 'false' ? false : true;
+
+    const newCar = new UpdateCarInput(
+      id,
+      model !== undefined ? model : carToUpdate.model,
+      isActive !== undefined ? active : carToUpdate.isActive,
+    );
+
+    if (active) await this.reservationsService.disableReservationsByCarId(id);
+
+    return await this.carsRepository.update(id, newCar);
   }
 
   async remove(id: number) {
