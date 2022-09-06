@@ -178,41 +178,69 @@ export class ReservationsService {
     );
 
     if (await this.isValidReservation(resa))
-      return this.reservationRepository.update(id, resa);
+      try {
+        return this.reservationRepository.update(id, resa);
+      } catch (error) {
+        throw new HttpException(error, 400);
+      }
 
     throw new HttpException('Cant succeed', 409);
   }
 
   async deleteReservation(id: number) {
-    return await this.reservationRepository.delete(id);
+    try {
+      return await this.reservationRepository.delete(id);
+    } catch (error) {
+      throw new HttpException(error, 400);
+    }
   }
 
   async getAllForUser(id: number) {
-    return await this.reservationRepository.findBy({
-      id_user: id,
-      isActive: true,
-    });
+    try {
+      return await this.reservationRepository.findBy({
+        id_user: id,
+        isActive: true,
+      });
+    } catch (error) {
+      throw new HttpException(error, 400);
+    }
   }
 
   async deleteReservationsByCarId(id: number) {
-    return await this.reservationRepository.delete({ id_car: id });
+    try {
+      return await this.reservationRepository.delete({ id_car: id });
+    } catch (error) {
+      throw new HttpException(error, 400);
+    }
   }
 
   async disableReservationsByCarId(id: number) {
-    return await this.reservationRepository.update(
-      { id_car: id },
-      { isActive: false },
-    );
+    try {
+      return await this.reservationRepository.update(
+        { id_car: id },
+        { isActive: false },
+      );
+    } catch (error) {
+      throw new HttpException(error, 400);
+    }
   }
 
   async removeByUserId(id: number) {
-    return await this.reservationRepository.delete({ id_user: id });
+    try {
+      return await this.reservationRepository.delete({ id_user: id });
+    } catch (error) {
+      throw new HttpException(error, 400);
+    }
   }
 
   async disableByUserId(id: number) {
-    return await this.reservationRepository.update(
-      { id_user: id },
-      { isActive: false },
-    );
+    try {
+      return await this.reservationRepository.update(
+        { id_user: id },
+        { isActive: false },
+      );
+    } catch (error) {
+      throw new HttpException(error, 400);
+    }
   }
 }

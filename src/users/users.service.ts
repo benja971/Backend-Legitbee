@@ -19,17 +19,29 @@ export class UsersService {
    */
 
   async create(user: CreateUserInput) {
-    return await this.usersRepository.save(user);
+    try {
+      return await this.usersRepository.save(user);
+    } catch (error) {
+      throw new HttpException(error, 400);
+    }
   }
 
   async findOne(id: number) {
-    return await this.usersRepository.findOneBy({ id });
+    try {
+      return await this.usersRepository.findOneBy({ id });
+    } catch (error) {
+      throw new HttpException('Cannot find this user', 400);
+    }
   }
 
   async remove(id: number) {
     // remove all related reservations
     await this.reservationService.removeByUserId(id);
-    return await this.usersRepository.delete(id);
+    try {
+      return await this.usersRepository.delete(id);
+    } catch (error) {
+      throw new HttpException('Cannot delete this user', 400);
+    }
   }
 
   async update(id: number, user: UpdateUserInput) {
@@ -54,10 +66,18 @@ export class UsersService {
 
     if (!active) await this.reservationService.disableByUserId(id);
 
-    return await this.usersRepository.update(id, user);
+    try {
+      return await this.usersRepository.update(id, newUser);
+    } catch (error) {
+      throw new HttpException('Cannot update this user', 400);
+    }
   }
 
   async findAll() {
-    return await this.usersRepository.find();
+    try {
+      return await this.usersRepository.find();
+    } catch (error) {
+      throw new HttpException(error, 400);
+    }
   }
 }

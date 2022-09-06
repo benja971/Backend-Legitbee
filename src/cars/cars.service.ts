@@ -21,21 +21,33 @@ export class CarsService {
    */
 
   async create(createCarInput: CreateCarInput) {
-    return await this.carsRepository.save(createCarInput);
+    try {
+      return await this.carsRepository.save(createCarInput);
+    } catch (error) {
+      throw new HttpException(error, 400);
+    }
   }
 
   async findAll() {
-    return await this.carsRepository.find();
+    try {
+      return await this.carsRepository.find();
+    } catch (error) {
+      throw new HttpException('Cannot find cars', 400);
+    }
   }
 
   async findOne(id: number) {
-    return await this.carsRepository.findOneBy({ id });
+    try {
+      return await this.carsRepository.findOneBy({ id });
+    } catch (error) {
+      throw new HttpException('Cannot find this car', 400);
+    }
   }
 
   async update(id: number, updateCarInput: UpdateCarInput) {
     const { model, isActive } = updateCarInput;
 
-    let carToUpdate;
+    let carToUpdate: Car;
     try {
       carToUpdate = await this.carsRepository.findOneBy({ id });
     } catch (error) {
@@ -60,6 +72,11 @@ export class CarsService {
   async remove(id: number) {
     // delete all the reservations related to the car
     await this.reservationsService.deleteReservationsByCarId(id);
-    return await this.carsRepository.delete(id);
+
+    try {
+      return await this.carsRepository.delete(id);
+    } catch (error) {
+      throw new HttpException('Cannot delete this car', 400);
+    }
   }
 }
